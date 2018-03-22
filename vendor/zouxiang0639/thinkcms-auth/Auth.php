@@ -12,6 +12,7 @@ namespace thinkcms\auth;
 
 defined('VIEW_PATH') or define('VIEW_PATH', __DIR__ . DS.'view'. DS);
 
+use chromephp\chromephp;
 use think\Cache;
 
 use think\Config;
@@ -108,8 +109,6 @@ class Auth
             if(array($authMenu)){ //授权菜单ID
                $where['id']=['in',array_keys($authMenu)];
             }
-        }else if($uid != 1){
-            $where['id'] = ['not in','8,163'];
         }
 
         $menu       = Menu::where($where)->order(["sort" => "asc",'id'=>'asc'])->column('*','id');
@@ -319,7 +318,6 @@ class Auth
         $uid        = self::sessionGet('user.uid');
         $rule       = [];
         $roleId     = AuthRoleUser::hasWhere('authRule',['status'=>1])->where(['user_id'=>$uid])->column('role_id');
-
         if(in_array(1,$roleId)){
             return true;
         }

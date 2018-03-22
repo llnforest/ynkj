@@ -9,7 +9,6 @@
             <th>账号</th>
             <td>
                 {if(!isset($info.name))}
-                <span style="float:left;height:34px;line-height: 34px;display:inline-block;font-size:14px;margin-right:8px;">{$info.code}_</span>
                 <input class="form-control text" type="text" name="name"  value="{$info.name??''}">
                 <span class="form-required">*</span>
                 {else}

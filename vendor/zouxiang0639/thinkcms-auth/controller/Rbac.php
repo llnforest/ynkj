@@ -170,6 +170,7 @@ class Rbac
      * 角色列表
      */
     public function role(){
+        $this->data['list']= AuthRole::all();
         return [VIEW_PATH.'role.php',$this->data];
     }
 
