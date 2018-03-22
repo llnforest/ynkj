@@ -1,0 +1,4 @@
+# 忽略提交文件
+appadmin/config.php
+appadmin/database.php
+runtime
