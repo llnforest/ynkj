@@ -1,10 +1,13 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
 
 
 
 use think\Controller;
-use think\Config;
 use think\Request;
 use thinkcms\auth\Auth;
 
@@ -32,7 +35,7 @@ class BaseController extends Controller
             $this->uid = $user['uid'];
             $this->role = $user['role'];
             if(!$auth->auth()){
-                $this->error("你没有权限访问！");
+                $this->error(lang('sys_no_permission'));
             }
         }else{
             $this->redirect('index/publics/login');

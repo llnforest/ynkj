@@ -1,8 +1,9 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
-
-use think\Request;
-use thinkcms\auth\model\AuthAccess;
 
 class Auth extends BaseController
 {
@@ -19,7 +20,7 @@ class Auth extends BaseController
             $this->view->engine->layout(false);
             return $this->fetch($auth[0],$auth[1]);
         }
-        return abort(404,'页面不存在');
+        return abort(404,lang('page_no_found'));
     }
 
 

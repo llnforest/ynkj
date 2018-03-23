@@ -1,12 +1,12 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
 
 
-use admin\index\model\AdminModel;
-use admin\index\model\SystemModel;
-use think\Config;
-use think\Db;
-use think\Request;
+use \model\AdminModel;
 use thinkcms\auth\model\AuthRole;
 use thinkcms\auth\model\AuthRoleUser;
 use thinkcms\auth\Auth;
@@ -27,7 +27,6 @@ class Admin extends BaseController
         $this->post         = $request->post();
         $this->adminModel   = new AdminModel();
         $this->id           = isset($this->param['id'])?intval($this->param['id']):'';
-
     }
 
     /**
@@ -71,9 +70,9 @@ class Admin extends BaseController
                 //加入角色
                 $authRoleUser = new AuthRoleUser();
                 $authRoleUser->authRoleUserAdd($role,$insert['id']);
-                return ['code' =>1,'msg'=>'添加成功','url' => url('admin/index')];
+                return ['code' =>1,'msg'=>lang('sys_add_success'),'url' => url('admin/index')];
             }else{
-                return ['code' =>0,'msg'=>'添加失败','url' => url('admin/index')];
+                return ['code' =>0,'msg'=>lang('sys_add_error'),'url' => url('admin/index')];
             }
         }
         $info['role'] = $this->role();
@@ -112,9 +111,9 @@ class Admin extends BaseController
                 //加入角色
                 $authRoleUser = new AuthRoleUser();
                 $authRoleUser->authRoleUserAdd($role,$id);
-                return ['code' =>1,'msg'=>'修改成功','url' => url('admin/index')];
+                return ['code' =>1,'msg'=>lang('sys_edit_success'),'url' => url('admin/index')];
             }else{
-                return ['code' =>0,'msg'=>'修改失败','url' => url('admin/index')];
+                return ['code' =>0,'msg'=>lang('sys_edit_success'),'url' => url('admin/index')];
             }
         }
         $info['role'] = $this->role($info['role']);
@@ -126,7 +125,7 @@ class Admin extends BaseController
             $post           = $this->post;
             $admin = AdminModel::get($this->uid);
             if(empty($admin)){
-                return ['code'=>0,'msg'=>'数据错误'];
+                return ['code'=>0,'msg'=>lang('sys_param_error')];
             }
             $result = $this->validate($post,[
                 ['old_password|原密码','require'],
@@ -145,7 +144,7 @@ class Admin extends BaseController
             }
             $admin->save(['password'=>md5($post['password'])]);
             Auth::logout();
-            return ['code'=>1,'msg'=>'修改成功','parents_url'=>url('publics/login')];
+            return ['code'=>1,'msg'=>lang('sys_edit_success'),'parents_url'=>url('publics/login')];
         }
         return view('password');
     }
@@ -156,7 +155,7 @@ class Admin extends BaseController
     public function delete($id)
     {
         if(!$this->request->isAjax()){
-            return abort(404, lang('删除方式错误'));
+            return abort(404, lang(lang('sys_method_error')));
         }else if($id==1){
             return $this->error('超级管理员不能删除');
         }
@@ -167,9 +166,9 @@ class Admin extends BaseController
             $authRoleUser = new AuthRoleUser();
             $authRoleUser->authRoleUserDelete($id);
 
-            return $this->success('删除成功',url($this->url));
+            return $this->success(lang('sys_del_success'),url($this->url));
         }else{
-            return $this->error('删除失败');
+            return $this->error(lang('sys_del_error'));
         }
 
     }
@@ -183,12 +182,12 @@ class Admin extends BaseController
             $param  = isset($this->param['data'])?$this->param['data']:0;
             $ratify = $this->adminModel->allowField(['status'])->save(['status'=>$param],['id'=>$id]);
             if($ratify){
-                return ['code' => 1,'msg' => '状态变更成功'];
+                return ['code' => 1,'msg' => lang('sys_status_success')];
             }else{
-                return ['code' => 0,'msg' => '状态变更失败'];
+                return ['code' => 0,'msg' => lang('sys_status_error')];
             }
         }
-        return ['code' => 0,'msg' => '请求方式错误'];
+        return ['code' => 0,'msg' => lang('sys_method_error')];
     }
 
     private function role($roleid = ''){

@@ -24,7 +24,7 @@
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <img class="nav-user-photo" width="22" height="22" src="__PublicAdmin__/images/admin_logo.png" alt="admin">
-                        <span class="user-info"> 欢迎{$systemname}, {$username} </span>
+                        <span class="user-info"> {$username}，欢迎您 </span>
                         <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">

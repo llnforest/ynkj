@@ -1,50 +1,15 @@
 <?php
-    //搜索时的条件
-    function getWhereParam($search,$param){
-        $where = [];
-        foreach($search as $k => $v){
-            if(is_numeric($k)){
-                $true_name = getTrueName($v);
-                if(!isset($param[$true_name]) || $param[$true_name] === '') continue;
-                $where[$v] = $param[$true_name];
-            }else{
-                if(is_array($v)){//是数组：比较两者之间的大小
-                    $start = getTrueName($v[0]);
-                    $end = getTrueName($v[1]);
-                    $is_time = strpos($k,'time');//判断是否是带有分秒的时间
-                    if(!empty($param[$start])){
-                        if(!empty($param[$end])){
-                            if($is_time !== false) $end = date('Y-m-d H:i:s',strtotime($param[$end])+(24*3600)-1);
-                            else $end = $param['end'];
-                            $where[$k]  = array('between time',array($param[$start],$end));
-                        }else{
-                            $where[$k]  = array('>=',$param[$start]);
-                        }
-                    }else{
-                        if(!empty($param[$end])){
-                            if($is_time !== false) $end = date('Y-m-d H:i:s',strtotime($param[$end])+(24*3600)-1);
-                            $where[$k]  = array('<=',$end);
-                        }
-                    }
-                }else{//字符串
-                    $true_name = getTrueName($k);
-                    if(!isset($param[$true_name]) || $param[$true_name] === '') continue;
-                    if(in_array($v,['like','NOT LIKE'])) $where[$k] = [$v,"%{$param[$true_name]}%"];
-                    elseif(in_array($v,['in','not in'])) $where[$k] = [$v,$param[$true_name]];
-                }
-            }
-        }
-        return $where;
-    }
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 
-    function getTrueName($name){
-        if(strpos($name,'.') !== false){
-            $name = explode('.',$name)[1];
-        }
-        return $name;
-    }
-
-    //获取使用年数
+if(!function_exists('getYearNum')){
+    /**
+     * 获取使用年数
+     * @param $start_date 2017-12-23 00:00:00
+     * @return string 2017-12-23
+     */
     function getYearNum($start_date){
         if(!$start_date) return '';
         $end_date = date('Y-m-d',time());
@@ -55,8 +20,14 @@
         $year = $endArr[0] - $startArr[0];
         return $year;
     }
+}
 
-    //转换excel时间
+if(!function_exists('excelTime')){
+    /**
+     * 转换excel时间
+     * @param $date 2017/03/09
+     * @return string 2017-03-09
+     */
     function excelTime($date) {
         if (function_exists('GregorianToJD')) {
             if (is_numeric($date)) {
@@ -73,4 +44,56 @@
         }
         return $date;
     }
+}
+
+if(!function_exists('operateResult')){
+    /**
+     * 操作结果
+     * @param boolean $default
+     * @param string $url
+     * @param string $operate
+     * @return array
+     */
+    function operateResult($default,$url,$operate = 'add'){
+        if ($default) {
+            return ['code' => 1, 'msg' => lang('sys_'.$operate.'_success'), 'url' => url($url)];
+        } else {
+            return ['code' => 0, 'msg' => lang('sys_'.$operate.'_error')];
+        }
+    }
+}
+
+if(!function_exists('inputResult')){
+    /**
+     * 输入框输入结果
+     * @param boolean $default
+     * @param string $operate
+     * @return array
+     */
+    function inputResult($default,$operate = 'sort'){
+        if ($default) {
+            return ['code' => 1, 'msg' => lang('sys_'.$operate.'_success')];
+        } else {
+            return ['code' => 0, 'msg' => lang('sys_'.$operate.'_error'),'text'=>$default[$operate]];
+        }
+    }
+}
+
+if(!function_exists('switchResult')){
+    /**
+     * switch操作结果
+     * @param boolean $default
+     * @param string $operate
+     * @return array
+     */
+    function switchResult($default,$operate = 'status'){
+        if ($default) {
+            return ['code' => 1, 'msg' => lang('sys_'.$operate.'_success')];
+        } else {
+            return ['code' => 0, 'msg' => lang('sys_'.$operate.'_error')];
+        }
+    }
+}
+
+
 ?>

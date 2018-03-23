@@ -1,4 +1,8 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
 
 use think\Config;
@@ -21,10 +25,12 @@ class Upload extends BaseController{
 		// 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         $type = isset($this->param['type'])?$this->param['type']:'';
-        if($type == 'code')
-            $baseUrl = DS . 'images' . DS . 'code';
-        else if($type == 'driver')
-            $baseUrl = DS . 'images' . DS .'driver';
+        if($type == 'banner')
+            $baseUrl = DS . 'images' . DS . 'banner';
+        else if($type == 'label')
+            $baseUrl = DS . 'images' . DS .'label';
+        else if($type == 'user')
+            $baseUrl = DS . 'images' . DS .'user';
         // 移动到框架应用根目录/public/uploads/ 目录下
         if($type == 'banner'){
             $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move(Config::get('upload.path') . DS . 'uploads' . $baseUrl);
@@ -36,7 +42,7 @@ class Upload extends BaseController{
             $data = [
                     'code' => 1,
                     'url' => $url,
-                    'msg' => '上传成功'
+                    'msg' => lang('sys_upload_success')
                 ];
             return json($data);
         }else{

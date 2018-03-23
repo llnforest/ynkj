@@ -1,14 +1,15 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
 
-use admin\index\model\SystemAreaModel;
-use admin\index\model\SystemCityModel;
-use admin\index\model\SystemModel;
 use think\Cache;
 use think\Controller;
 use think\Db;
 use thinkcms\auth\Auth;
-use admin\index\model\AdminModel;
+use model\AdminModel;
 
 
 class Publics extends Controller
@@ -81,6 +82,6 @@ class Publics extends Controller
      */
     public function clear(){
         Cache::clear();
-        echo '缓存清除成功';
+        echo lang('sys_cache_clear');
     }
 }

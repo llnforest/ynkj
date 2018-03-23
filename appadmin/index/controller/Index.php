@@ -1,18 +1,13 @@
 <?php
+/**
+ * author: Lynn
+ * since: 2018/3/23 12:05
+ */
 namespace admin\index\controller;
 
 
-use admin\index\model\AdminModel;
-use admin\index\model\SystemModel;
 use thinkcms\auth\Auth;
 use thinkcms\auth\library\Tree;
-use thinkcms\auth\model\Menu;
-use admin\order\model\OrderModel;
-use admin\order\model\MemberOrderModel;
-use admin\user\model\UserModel;
-use admin\user\model\MemberModel;
-use admin\finance\model\TakeModel;
-use admin\finance\model\MemberTakeModel;
 
 class Index extends BaseController
 {

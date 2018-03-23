@@ -142,16 +142,17 @@ $(function() {
         ).blur(function(){
             var _this = $(this);
             _this.css("background-color", "#FFFFFF");
-            url     = $(this).attr('post-url');
-            id      = $(this).attr('post-id');
-            data   = $(this).val().trim();
+            var url  = _this.attr('post-url');
+            var id   = _this.attr('post-id');
+            var data = _this.val().trim();
+            var name = _this.attr('data-name') || '';
             if(data == change_data) return false;
             $.ajax(
                 {
                     url : url,
                     type : 'post',
                     dataType : 'json',
-                    data : 'id=' + id + '&data=' + data,
+                    data : 'id=' + id + '&data=' + data + '&name=' + name,
                     success : function (json)
                     {
                         clearTimeout(set_time);
@@ -195,6 +196,7 @@ $(function() {
             var _this = $(this).prev('input');
             var _input = _this.prev("input");
             var dom_value = _this.attr("data-value");
+            var name = _this.attr("data-name");
             var value_arr = dom_value.split('|');
             if(_this.prop("checked")){
                 _input.val(value_arr[0]);
@@ -210,7 +212,7 @@ $(function() {
                         url : url,
                         type : 'post',
                         dataType : 'json',
-                        data : 'data=' + data ,
+                        data : 'data=' + data + '&name=' + name ,
                         success : function (json)
                         {
                             clearTimeout(set_time);

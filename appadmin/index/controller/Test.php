@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2017/12/14
- * Time: 17:28
+ * author: Lynn
+ * since: 2018/3/23 12:05
  */
 
 namespace admin\index\controller;

@@ -6,6 +6,7 @@ html,
 .red{ color: #ff0000; }
 .blue{color:#1abc9c}
 .grey{color:#ccc}
+.short-input{max-width:60px;}
 .list-group .list-group-item{
     cursor:pointer;
 }

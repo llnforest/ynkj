@@ -583,3 +583,68 @@ if (!function_exists('collection')) {
         }
     }
 }
+
+// -------------自定义助手函数--------------------
+
+if(!function_exists('getWhereParam')){
+    /**
+     * 格式化查询条件
+     * @param array $search mysql 条件
+     * @param array $param 参数数组
+     * @return array
+     */
+    function getWhereParam($search,$param){
+        $where = [];
+        foreach($search as $k => $v){
+            if(is_numeric($k)){
+                $field_string = getFieldString($v);
+                if(!isset($param[$field_string]) || $param[$field_string] === '') continue;
+                $where[$v] = $param[$field_string];
+            }else{
+                if(is_array($v)){//是数组：比较两者之间的大小
+                    $start = getFieldString($v[0]);
+                    $end = getFieldString($v[1]);
+                    $is_time = strpos($k,'time');//判断是否是带有分秒的时间
+                    if(!empty($param[$start])){
+                        if(!empty($param[$end])){
+                            if($is_time !== false) $end = date('Y-m-d H:i:s',strtotime($param[$end])+(24*3600)-1);
+                            else $end = $param['end'];
+                            $where[$k]  = array('between time',array($param[$start],$end));
+                        }else{
+                            $where[$k]  = array('>=',$param[$start]);
+                        }
+                    }else{
+                        if(!empty($param[$end])){
+                            if($is_time !== false) $end = date('Y-m-d H:i:s',strtotime($param[$end])+(24*3600)-1);
+                            $where[$k]  = array('<=',$end);
+                        }
+                    }
+                }else{//字符串
+                    $field_string = getFieldString($k);
+                    if(!isset($param[$field_string]) || $param[$field_string] === '') continue;
+                    if(in_array($v,['like','NOT LIKE'])) $where[$k] = [$v,"%{$param[$field_string]}%"];
+                    elseif(in_array($v,['in','not in'])) $where[$k] = [$v,$param[$field_string]];
+                }
+            }
+        }
+        return $where;
+    }
+
+}
+
+if(!function_exists('getFieldString')){
+    /*
+     * 格式化字段名称
+     * @param string $name 字段名称
+     * @return string
+    */
+    function getFieldString($name){
+        if(strpos($name,'.') !== false){
+            $name = explode('.',$name)[1];
+        }
+        return $name;
+    }
+}
+
+
+?>
