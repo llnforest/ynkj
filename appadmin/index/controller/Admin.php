@@ -203,6 +203,14 @@ class Admin extends BaseController
         return $html;
     }
 
+    //渲染用户列表
+    public function adminList(){
+        if(empty($this->param['name'])) return ['code'=>0,'data'=>[]];
+        $adminList = AdminModel::field('id,nick_name as name')->where(['nick_name'=>['like','%'.$this->param['name'].'%'],'status'=>1,'is_agent'=>1])->order('create_time desc')->select();
+        if(count($adminList) == 0) return ['code'=>2,'data'=>$adminList];
+        else return ['code'=>1,'data'=>$adminList];
+    }
+
 }
 
 ?>

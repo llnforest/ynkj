@@ -6,18 +6,15 @@
 namespace admin\base\controller;
 
 use admin\index\controller\BaseController;
-use chromephp\chromephp;
 use model\BaseBannerModel;
 use think\Config;
 use think\Validate;
 
 
 class Banner extends BaseController{
-
     private $roleValidate = ['url|图片地址' => 'require','href|超链接' => 'url'];
     //构造函数
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
 
@@ -47,7 +44,7 @@ class Banner extends BaseController{
     //修改banner
     public function bannerEdit(){
         $data['info'] = BaseBannerModel::get($this->id);
-        if(!$data['info']) $this->error(lang('param_error'));
+        if(!$data['info']) $this->error(lang('sys_param_error'));
         if($this->request->isPost()){
             $validate = new Validate($this->roleValidate);
             if(!$validate->check($this->param)) return ['code' => 0,'msg' => $validate->getError()];
@@ -61,9 +58,7 @@ class Banner extends BaseController{
         if($this->request->isPost()) {
             $result = BaseBannerModel::get($this->id);
             if (empty($result)) return ['code' => 0, 'msg' => lang('sys_param_error')];
-            chromephp::info(Config::(__ImagePath__));
-            @unlink(Config::get('upload.path').$result['url']);
-//            return operateResult($result->delete(),'banner/index','del');
+            return operateResult($result->delete() && @unlink(Config::get('upload.path').$result['url']),'banner/index','del');
         }
         return ['code'=>0,'msg'=>lang('sys_method_error')];
     }

@@ -14,6 +14,7 @@
             <th width="50">ID</th>
             <th>账号</th>
             <th>姓名</th>
+            <th>职位</th>
             <th>邮箱</th>
             <th>最后登录IP</th>
             <th>最后登录时间</th>
@@ -30,6 +31,7 @@
                 <td>{$v.id}</td>
                 <td>{$v.name}</td>
                 <td>{$v.nick_name}</td>
+                <td>{$v.is_agent|str_replace=[1,2,3],['经纪人','总经理','其他'],###}</td>
                 <td>{$v.email}</td>
                 <td>{$v.last_login_ip}</td>
                 <td>{$v.last_login_time}</td>

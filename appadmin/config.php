@@ -50,6 +50,8 @@ return [
     'class_suffix'           => false,
     // 控制器类后缀
     'controller_suffix'      => false,
+    // 项目控制
+    'sys_open'              => 1,
 
     // +----------------------------------------------------------------------
     // | 模块设置
@@ -240,10 +242,10 @@ return [
 
    'thinkcms' =>[
         'style_directory' => '/static/admin/',
-        'session_prefix'  => 'abc_',
+        'session_prefix'  => 'admin_',
     ],
     'upload'        =>[
-        'path'      =>  '../public',
+        'path'      =>  '../public/uploads',
     ],
     'test'          =>[
         'uid'       =>'1,2,3,4,5,6,7,8,9,10,11,12,13,14,26',

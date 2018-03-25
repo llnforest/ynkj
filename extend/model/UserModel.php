@@ -4,9 +4,11 @@
  * since: 2018/3/23 12:05
  */
 namespace model;
+use traits\model\SoftDelete;
 
 class UserModel extends \think\Model
 {
+    use SoftDelete;
     // 设置完整的数据表（包含前缀）
     protected $name = 'tp_user';
     protected $autoWriteTimestamp = 'datetime';

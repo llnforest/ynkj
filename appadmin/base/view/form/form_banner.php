@@ -13,7 +13,7 @@
                 </td>
             </tr>
             <tr>
-                <th>banner状态{$info.updown == 0?'':'checked'}</th>
+                <th>banner状态</th>
                 <td class="layui-form">
                     <input type="checkbox" data-name="updown" lay-skin="switch" lay-text="上架|下架" {if !isset($info.updown) || $info.updown == 1}checked{/if} data-value="1|0">
                 </td>

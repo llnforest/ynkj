@@ -6,6 +6,10 @@ html,
 .red{ color: #ff0000; }
 .blue{color:#1abc9c}
 .grey{color:#ccc}
+.table-image{
+    display:block;
+    max-width:600px;
+}
 .short-input{max-width:60px;}
 .list-group .list-group-item{
     cursor:pointer;

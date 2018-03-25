@@ -23,8 +23,8 @@ class Index extends BaseController
         $this->view->engine->layout('layouts/index');
         $this->assign([
             'menu'      => self::menu(),
-            'username'      => Auth::sessionGet('user.nickname'),
-            'systemname'    => Auth::sessionGet('user.nickname')
+            'username'      => Auth::sessionGet('user.nick_name'),
+            'systemname'    => Auth::sessionGet('user.nick_name')
 
         ]);
         return view();

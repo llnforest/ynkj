@@ -12,7 +12,6 @@ namespace thinkcms\auth;
 
 defined('VIEW_PATH') or define('VIEW_PATH', __DIR__ . DS.'view'. DS);
 
-use chromephp\chromephp;
 use think\Cache;
 
 use think\Config;
@@ -64,7 +63,7 @@ class Auth
      * @return mixed
      */
     public function auth(){
-        $uid                = self::sessionGet('user.uid');
+        $uid                = self::sessionGet('user.id');
         $controller         = Loader::parseName($this->controller,1); //字符串命名风格转换
         $rule               = strtolower("{$this->module}/{$controller}/{$this->action}");
         //如果用户角色是1，则无需判断
@@ -97,7 +96,7 @@ class Auth
      */
     public static function menuCheck(){
 
-        $uid = self::sessionGet('user.uid');
+        $uid = self::sessionGet('user.id');
 
         if(empty($uid)){
             return false;
@@ -180,14 +179,14 @@ class Auth
      * @return array
      */
     public function  createLog($logrule,$title){
-        $uid    = self::sessionGet('user.uid');
+        $uid    = self::sessionGet('user.id');
         $condition = '';
         $command   = preg_replace('/\{(\w*?)\}/', '{$param[\'\\1\']}', $logrule);
         @(eval('$condition=("' . $command . '");'));
 
         $data   = [
             'action_ip'     => ip2long($this->request->ip()),
-            'username'      => self::sessionGet('user.nickname'),
+            'username'      => self::sessionGet('user.nick_name'),
             'log_url'       => '/'.$this->request->pathinfo(),
             'log'           => $condition,
             'user_id'       => $uid,
@@ -208,7 +207,7 @@ class Auth
         if($role == 1){
             return true;
         }
-        $uid    = self::sessionGet('user.uid');
+        $uid    = self::sessionGet('user.id');
         $authMenu   = Cache::get('authMenu_'.$uid);
 
         if(!$authMenu){ //存入缓存 授权菜单
@@ -315,7 +314,7 @@ class Auth
      * @return array
      */
     private static function authMenu($where=[],$default = true){
-        $uid        = self::sessionGet('user.uid');
+        $uid        = self::sessionGet('user.id');
         $rule       = [];
         $roleId     = AuthRoleUser::hasWhere('authRule',['status'=>1])->where(['user_id'=>$uid])->column('role_id');
         if(in_array(1,$roleId)){
@@ -367,8 +366,9 @@ class Auth
         }
         $session_prefix = Config::get('thinkcms.session_prefix');
         $user           = [
-                            'uid'       => $userData['id'],
-                            'nickname'  => $userData['nick_name'],
+                            'id'       => $userData['id'],
+                            'is_agent'       => $userData['is_agent'],
+                            'nick_name'  => $userData['nick_name'],
                             'time'      => time(),
                             'role'      => $userData['role'],
                         ];

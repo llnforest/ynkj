@@ -9,7 +9,7 @@
             <th>账号</th>
             <td>
                 {if(!isset($info.name))}
-                <input class="form-control text" type="text" name="name"  value="{$info.name??''}">
+                <input class="form-control text" type="text" name="name"  value="{$info.name??''}" placeholder="账号">
                 <span class="form-required">*</span>
                 {else}
                 <input class="form-control text" type="text" readonly value="{$info.name??''}">
@@ -28,6 +28,19 @@
             <td>
                 <input class="form-control text" type="text" name="nick_name" value="{$info.nick_name??''}" placeholder="姓名">
                 <span class="form-required">*</span>
+            </td>
+        </tr>
+        <tr>
+            <th>职位</th>
+            <td>
+            <div class="layui-form select">
+                <select name="is_agent" class="form-control text">
+                    <option value="1" {$info.is_agent == 1?'checked':''}>经纪人</option>
+                    <option value="2" {$info.is_agent == 2?'checked':''}>总经理</option>
+                    <option value="3" {$info.is_agent == 3?'checked':''}>其他</option>
+                </select>
+            </div>
+            <span class="form-required">*</span>
             </td>
         </tr>
         <tr>

@@ -38,7 +38,7 @@
                 <th width="100">标题</th>
                 <th width="80">链接</th>
                 <th width="80">状态</th>
-                <th width="40">排序</th>
+                <th width="40" >排序<span order="sort" class="order-sort"> </span></th>
                 <th width="80">操作</th>
             </tr>
             </thead>

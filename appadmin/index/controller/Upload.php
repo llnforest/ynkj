@@ -29,13 +29,15 @@ class Upload extends BaseController{
             $baseUrl = DS . 'images' . DS . 'banner';
         else if($type == 'label')
             $baseUrl = DS . 'images' . DS .'label';
+        else if($type == 'notice')
+            $baseUrl = DS . 'images' . DS .'notice';
         else if($type == 'user')
             $baseUrl = DS . 'images' . DS .'user';
         // 移动到框架应用根目录/public/uploads/ 目录下
-        if($type == 'banner'){
-            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move(Config::get('upload.path') . DS . 'uploads' . $baseUrl);
+        if(in_array($type,['banner','label','notice'])){
+            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move(Config::get('upload.path') . DS . $baseUrl);
         }else{
-            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->size(1000)->move(Config::get('upload.path') . DS . 'uploads' . $baseUrl);
+            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->size(1000)->move(Config::get('upload.path') . DS .  $baseUrl);
         }
         if($info){
             $url = $baseUrl . DS . $info->getSaveName();
