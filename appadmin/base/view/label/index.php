@@ -35,7 +35,7 @@
                     <td><img class="mini-image" src="{$v.url?'__ImagePath__'.$v.url:''}" style="width:80px"></td>
                     <td>{$v.name}</td>
                     <td>
-                        {if condition="checkPath('label/inputLabel',['id'=>$v['id']])"}
+                        {if condition="checkPath('label/inputLabel')"}
                         <input class="form-control change-data short-input"  post-id="{$v.id}" post-url="{:url('label/inputLabel')}" data-name="sort" value="{$v.sort}">
                         {else}
                         {$v.sort}

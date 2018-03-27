@@ -15,7 +15,7 @@
                         <select name="status" class="form-control">
                             <option value="">全部状态</option>
                             <option value="1" {if input('status') == 1}selected{/if}>已上架</option>
-                            <option value="2" {if input('status') == 2}selected{/if}>等待审核</option>
+                            <option value="2" {if input('status') == 2}selected{/if}>审核中</option>
                             <option value="3" {if input('status') == 3}selected{/if}>审核失败</option>
                             <option value="4" {if input('status') == 4}selected{/if}>已成交</option>
                             <option value="0" {if input('status') === '0'}selected{/if}>已下架</option>
@@ -46,7 +46,7 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <input name="title" value="{:input('title')}" placeholder="房源标题" class="form-control"  type="text">
+                        <input name="title" value="{:input('title')}" placeholder="房源名称" class="form-control"  type="text">
                     </div>
                     <div class="btn-group">
                         <input name="nick_name" value="{:input('nick_name')}" placeholder="经纪人" class="form-control"  type="text">
@@ -66,12 +66,13 @@
         <table class="table table-hover table-bordered table-list" id="menus-table">
             <thead>
             <tr>
-                <th width="100">房源标题</th>
-                <th width="100">房源标签<span order="label_id" class="order-sort"></span></th>
-                <th width="100">房型<span order="fangxing" class="order-sort"></span></th>
-                <th width="100">区域<span order="quyu" class="order-sort"></span></th>
-                <th width="100">状态</th>
-                <th width="100">经纪人<span order="admin_id" class="order-sort"></span></th>
+                <th width="100">房源名称</th>
+                <th width="60">房源标签<span order="label_id" class="order-sort"></span></th>
+                <th width="60">房型<span order="fangxing" class="order-sort"></span></th>
+                <th width="60">区域<span order="quyu" class="order-sort"></span></th>
+                <th width="50">状态</th>
+                <th width="60">经纪人<span order="admin_id" class="order-sort"></span></th>
+                <th width="40">排序<span order="sort" class="order-sort"> </span></th>
                 <th width="80">创建时间<span order="create_time" class="order-sort"></span></th>
                 <th width="80">操作</th>
             </tr>
@@ -83,14 +84,36 @@
                     <td>{$v.label_name}</td>
                     <td>{$v.fangxing_name}</td>
                     <td>{$v.quyu_name}</td>
-                    <td>{if $v.status == 1}<span class="blue">预约成功</span>{elseif $v.status == 2}<span class="red">取消预约</span>{else}待审核{/if}</td>
+                    <td>{if $v.status == 1}<span class="blue">已上架</span>{elseif $v.status == 2}<span class="red">审核中</span>{elseif $v.status == 3}<span class="grey">审核失败</span>{elseif $v.status == 4}<span class="green">已成交</span>{else}<span class="yellow">已下架</span>{/if}</td>
                     <td>{$v.nick_name}</td>
+                    <td>
+                        {if condition="checkPath('house/inputHouse')"}
+                        <input class="form-control change-data short-input"  post-id="{$v.id}" post-url="{:url('house/inputHouse')}" data-name="sort" value="{$v.sort}">
+                        {else}
+                        {$v.sort}
+                        {/if}
+                    </td>
                     <td>{$v.create_time}</td>
                     <td>
-                        {if condition="checkPath('house/houseEdit',['id'=>$v['id']]) && $v.status == 0"}
+                        {if condition="checkPath('house/houseEdit',['id'=>$v['id']]) && in_array($v.status,[0,3])"}
                         <a  href="{:url('house/houseEdit',['id'=>$v['id']])}">修改</a>
                         {/if}
-                        {if condition="checkPath('house/houseDelete',['id'=>$v['id']])"}
+                        {if condition="checkPath('house/operateHouse',['id'=>$v['id'],'data'=>2]) && in_array($v.status,[0,3])"}
+                        <span  class="span-post" post-msg="确认提交申请吗？审核通过后将会上架" post-url="{:url('house/operateHouse',['id'=>$v['id'],'data'=>2,'name'=>'status'])}">上架申请</span>
+                        {/if}
+                        {if condition="checkPath('house/operateHouse',['id'=>$v['id'],'data'=>1]) && in_array($v.status,[2])"}
+                        <span  class="span-post" post-msg="确认房源上架吗？" post-url="{:url('house/operateHouse',['id'=>$v['id'],'data'=>1,'name'=>'status'])}">确认上架</span>
+                        {/if}
+                        {if condition="checkPath('house/operateHouse',['id'=>$v['id'],'data'=>3]) && in_array($v.status,[2])"}
+                        <span  class="span-post" post-msg="确认打回重审吗？" post-url="{:url('house/operateHouse',['id'=>$v['id'],'data'=>3,'name'=>'status'])}">打回重审</span>
+                        {/if}
+                        {if condition="checkPath('house/operateHouse',['id'=>$v['id'],'data'=>4]) && in_array($v.status,[1])"}
+                        <span  class="span-post" post-msg="确认打回重审吗？" post-url="{:url('house/operateHouse',['id'=>$v['id'],'data'=>4,'name'=>'status'])}">确认成交</span>
+                        {/if}
+                        {if condition="checkPath('house/houseDetail') && in_array($v.status,[1,2,4])"}
+                        <a  href="{:url('house/houseDetail',['id'=>$v['id']])}">查看</a>
+                        {/if}
+                        {if condition="checkPath('house/houseDelete',['id'=>$v['id']]) && in_array($v.status,[0,3])"}
                             <a  class="span-post" post-msg="确定要删除吗" post-url="{:url('house/houseDelete',['id'=>$v['id']])}">删除</a>
                         {/if}
                     </td>

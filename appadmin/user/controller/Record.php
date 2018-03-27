@@ -13,7 +13,7 @@ use think\Validate;
 class Record extends BaseController
 {
 
-    private $roleValidate = ['house_id|房源标题' => 'require','user_id|用户手机' => 'require','record_date|看房日期'=>'require'];
+    private $roleValidate = ['house_id|房源名称' => 'require','user_id|用户手机' => 'require','record_date|看房日期'=>'require'];
     //构造函数
     public function __construct()
     {

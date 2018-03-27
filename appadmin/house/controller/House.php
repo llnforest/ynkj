@@ -9,13 +9,17 @@ use admin\index\controller\BaseController;
 use chromephp\chromephp;
 use model\BaseLabelModel;
 use model\BaseSearchModel;
+use model\HouseDetailModel;
+use model\HouseImageModel;
 use model\HouseModel;
+use model\UserRequestImageModel;
+use model\UserRequestModel;
 use think\Validate;
 
 
 class House extends BaseController{
 
-    private $roleValidate = ['house_id|驾驶员' => 'require','bus_id|车辆' => 'require','accident_date' => 'require'];
+    private $roleValidate = ['title|房源名称' => 'require','price|房源售价' => 'require|number','mianji|房源面积' => 'number'];
     //构造函数
     public function __construct()
     {
@@ -49,21 +53,79 @@ class House extends BaseController{
         if($this->request->isPost()){
             $validate = new Validate($this->roleValidate);
             if(!$validate->check($this->param)) return ['code' => 0, 'msg' => $validate->getError()];
-            return operateResult(HouseModel::create($this->param),'house/index','add');
+            if($house = HouseModel::create($this->param)){
+                HouseDetailModel::create(['house_id'=>$house['id'],'shuifeijiexi'=>$this->param['shuifeijiexi'],'zhuangxiumiaoshu'=>$this->param['zhuangxiumiaoshu'],'huxingjieshao'=>$this->param['huxingjieshao'],'hexinmaidian'=>$this->param['hexinmaidian']]);
+                $imgList = json_decode($this->param['img_data'],true);
+                if(count($imgList) > 0){
+                    foreach($imgList as &$item){
+                        $item['house_id'] = $house['id'];
+                    }
+                    $imgModel = new HouseImageModel();
+                    $imgModel->saveAll($imgList);
+                }
+                //发布
+                if(!empty($this->param['request_id'])) UserRequestModel::where(['id'=>$this->param['request_id']])->update(['status'=>3]);
+            }
+            return operateResult($house,'house/index','add');
         }
-        return view('houseAdd');
+        if($this->id){//从需求处发布
+            $request = UserRequestModel::get($this->id);
+            $data = ['request_id'=>$this->id,'label_id'=>$request['label_id']];
+            $data['imgList'] = UserRequestImageModel::all(['request_id' => $this->id]);
+        }//从需求处发布
+        $data['labelList'] = BaseLabelModel::order('sort asc')->select();
+        $data['fangList'] = BaseSearchModel::where(['type'=>3])->order('sort asc')->select();
+        $data['quList'] = BaseSearchModel::where(['type'=>1])->order('sort asc')->select();
+        return view('houseAdd',$data);
     }
 
     //修改房源
     public function houseEdit(){
-        $data['info'] = HouseModel::get($this->id);
+        $data['info'] = HouseModel::alias('a')
+            ->join('tp_house_detail b','a.id = b.house_id','left')
+            ->join('tp_admin c','a.admin_id = c.id','left')
+            ->field('a.*,b.shuifeijiexi,b.zhuangxiumiaoshu,b.huxingjieshao,b.hexinmaidian,c.nick_name')
+            ->where(['a.id'=>$this->id])
+            ->find();
         if(!$data['info']) $this->error(lang('sys_param_error'));
         if($this->request->isPost()){
             $validate = new Validate($this->roleValidate);
             if(!$validate->check($this->param)) return ['code' => 0,'msg' => $validate->getError()];
-            return operateResult($data['info']->save($this->param),'house/index','edit');
+            if($house = $data['info']->save($this->param)){
+                HouseDetailModel::where(['house_id'=>$this->id])->update(['shuifeijiexi'=>$this->param['shuifeijiexi'],'zhuangxiumiaoshu'=>$this->param['zhuangxiumiaoshu'],'huxingjieshao'=>$this->param['huxingjieshao'],'hexinmaidian'=>$this->param['hexinmaidian']]);
+                HouseImageModel::where(['house_id'=>$this->id])->delete();
+                $imgList = json_decode($this->param['img_data'],true);
+                if(count($imgList) > 0){
+                    foreach($imgList as &$item){
+                        $item['house_id'] = $this->id;
+                    }
+                    $imgModel = new HouseImageModel();
+                    $imgModel->saveAll($imgList);
+                }
+            }
+            return operateResult($house,'house/index','edit');
         }
+        $data['labelList'] = BaseLabelModel::order('sort asc')->select();
+        $data['fangList'] = BaseSearchModel::where(['type'=>3])->order('sort asc')->select();
+        $data['quList'] = BaseSearchModel::where(['type'=>1])->order('sort asc')->select();
+        $data['imgList'] = HouseImageModel::where(['house_id'=>$this->id])->order('sort asc')->select();
         return view('houseEdit',$data);
+    }
+
+    //查看房源
+    public function houseDetail(){
+        $data['info'] = HouseModel::alias('a')
+            ->join('tp_house_detail b','a.id = b.house_id','left')
+            ->join('tp_base_label c','a.label_id = c.id','left')
+            ->join('tp_base_search d','a.quyu = d.id','left')
+            ->join('tp_base_search e','a.fangxing = e.id','left')
+            ->join('tp_admin f','a.admin_id = f.id','left')
+            ->field('a.*,b.shuifeijiexi,b.zhuangxiumiaoshu,b.huxingjieshao,b.hexinmaidian,c.name as label_name,d.term as quyu_name,e.term as fangxing_name,f.nick_name')
+            ->where(['a.id'=>$this->id])
+            ->find();
+        if(!$data['info']) $this->error(lang('sys_param_error'));
+        $data['imgList'] = HouseImageModel::where(['house_id'=>$this->id])->order('sort asc')->select();
+        return view('houseDetail',$data);
     }
 
     // 删除房源
@@ -71,8 +133,6 @@ class House extends BaseController{
         if($this->request->isPost()) {
             $result = HouseModel::get($this->id);
             if (empty($result)) return ['code' => 0, 'msg' => lang('sys_param_error')];
-            !empty($result['banner_url']) && @unlink(Config::get('upload.path').$result['banner_url']);
-            !empty($result['house_url']) && @unlink(Config::get('upload.path').$result['house_url']);
             return operateResult($result->delete(),'house/index','del');
         }
         return ['code'=>0,'msg'=>lang('sys_method_error')];
@@ -88,6 +148,19 @@ class House extends BaseController{
         }
         return ['code'=>0,'msg'=>lang('sys_method_error')];
     }
+
+    // 房源状态变更
+    public function operateHouse(){
+        if($this->request->isPost()) {
+            $result = HouseModel::get($this->id);
+            if (empty($result)) return ['code' => 0, 'msg' => lang('sys_param_error')];
+            $data = [$this->param['name'] => $this->param['data']];
+            if($this->param['data'] == 1) $data['guapai_date'] = date('Y-m-d',time());
+            return switchResult($result->save($data),'status');
+        }
+        return ['code'=>0,'msg'=>lang('sys_method_error')];
+    }
+
     //渲染用户列表
     public function houseList(){
         if(empty($this->param['name'])) return ['code'=>0,'data'=>[]];

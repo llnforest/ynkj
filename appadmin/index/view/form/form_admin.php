@@ -35,9 +35,9 @@
             <td>
             <div class="layui-form select">
                 <select name="is_agent" class="form-control text">
-                    <option value="1" {$info.is_agent == 1?'checked':''}>经纪人</option>
-                    <option value="2" {$info.is_agent == 2?'checked':''}>总经理</option>
-                    <option value="3" {$info.is_agent == 3?'checked':''}>其他</option>
+                    <option value="1" {$info.is_agent == 1?'selected':''}>经纪人</option>
+                    <option value="2" {$info.is_agent == 2?'selected':''}>总经理</option>
+                    <option value="3" {$info.is_agent == 3?'selected':''}>其他</option>
                 </select>
             </div>
             <span class="form-required">*</span>

@@ -3,9 +3,9 @@
     <table class="table table-bordered">
         <tbody>
             <tr>
-                <th>房源标题</th>
+                <th>房源名称</th>
                 <td>
-                    <input class="form-control text click-show" type="text" data-url="{:url("house/house/houseList")}" value="{$info.title??''}" placeholder="请输入想要查找的房源标题" data-msg="房源标题">
+                    <input class="form-control text click-show" type="text" data-url="{:url("house/house/houseList")}" value="{$info.title??''}" placeholder="请输入想要查找的房源名称" data-msg="房源名称">
                     <input class="form-control text click-id" type="hidden" name="house_id" value="{$info.title??''}">
                     <ul class="list-group click-show-wrap text">
                     </ul>

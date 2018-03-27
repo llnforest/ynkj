@@ -23,7 +23,7 @@
                         <input name="phone" value="{:input('phone')}" placeholder="手机号" class="form-control"  type="text">
                     </div>
                     <div class="btn-group">
-                        <input name="title" value="{:input('title')}" placeholder="房源标题" class="form-control"  type="text">
+                        <input name="title" value="{:input('title')}" placeholder="房源名称" class="form-control"  type="text">
                     </div>
                     <div class="btn-group">
                         <input name="start" value="{:input('start')}" placeholder="预约起始日期" readonly dom-class="date-start" class="date-time date-start form-control laydate-icon"  type="text">
@@ -41,7 +41,7 @@
             <thead>
             <tr>
                 <th width="100">用户</th>
-                <th width="100">房源标题</th>
+                <th width="100">房源名称</th>
                 <th width="100">经纪人</th>
                 <th width="100">状态</th>
                 <th width="80">预约日期<span order="reserve_date" class="order-sort"> </span></th>
