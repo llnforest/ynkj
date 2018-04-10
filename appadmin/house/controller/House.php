@@ -6,7 +6,7 @@
 namespace admin\house\controller;
 
 use admin\index\controller\BaseController;
-use chromephp\chromephp;
+use model\BaseBetterModel;
 use model\BaseLabelModel;
 use model\BaseSearchModel;
 use model\HouseDetailModel;
@@ -53,6 +53,7 @@ class House extends BaseController{
         if($this->request->isPost()){
             $validate = new Validate($this->roleValidate);
             if(!$validate->check($this->param)) return ['code' => 0, 'msg' => $validate->getError()];
+            if(!empty($this->param['better_ids'])) $this->param['better_ids'] = implode(',',$this->param['better_ids']);
             if($house = HouseModel::create($this->param)){
                 HouseDetailModel::create(['house_id'=>$house['id'],'shuifeijiexi'=>$this->param['shuifeijiexi'],'zhuangxiumiaoshu'=>$this->param['zhuangxiumiaoshu'],'huxingjieshao'=>$this->param['huxingjieshao'],'hexinmaidian'=>$this->param['hexinmaidian']]);
                 $imgList = json_decode($this->param['img_data'],true);
@@ -76,6 +77,7 @@ class House extends BaseController{
         $data['labelList'] = BaseLabelModel::order('sort asc')->select();
         $data['fangList'] = BaseSearchModel::where(['type'=>3])->order('sort asc')->select();
         $data['quList'] = BaseSearchModel::where(['type'=>1])->order('sort asc')->select();
+        $data['betterList'] = BaseBetterModel::order('sort asc')->select();
         return view('houseAdd',$data);
     }
 
@@ -91,6 +93,7 @@ class House extends BaseController{
         if($this->request->isPost()){
             $validate = new Validate($this->roleValidate);
             if(!$validate->check($this->param)) return ['code' => 0,'msg' => $validate->getError()];
+            if(!empty($this->param['better_ids'])) $this->param['better_ids'] = implode(',',$this->param['better_ids']);
             if($house = $data['info']->save($this->param)){
                 HouseDetailModel::where(['house_id'=>$this->id])->update(['shuifeijiexi'=>$this->param['shuifeijiexi'],'zhuangxiumiaoshu'=>$this->param['zhuangxiumiaoshu'],'huxingjieshao'=>$this->param['huxingjieshao'],'hexinmaidian'=>$this->param['hexinmaidian']]);
                 HouseImageModel::where(['house_id'=>$this->id])->delete();
@@ -109,6 +112,7 @@ class House extends BaseController{
         $data['fangList'] = BaseSearchModel::where(['type'=>3])->order('sort asc')->select();
         $data['quList'] = BaseSearchModel::where(['type'=>1])->order('sort asc')->select();
         $data['imgList'] = HouseImageModel::where(['house_id'=>$this->id])->order('sort asc')->select();
+        $data['betterList'] = BaseBetterModel::order('sort asc')->select();
         return view('houseEdit',$data);
     }
 
@@ -125,6 +129,9 @@ class House extends BaseController{
             ->find();
         if(!$data['info']) $this->error(lang('sys_param_error'));
         $data['imgList'] = HouseImageModel::where(['house_id'=>$this->id])->order('sort asc')->select();
+        if($data['info']['better_ids']){
+            $data['better'] = BaseBetterModel::where(['id'=>['in',$data['info']['better_ids']]])->field('group_concat(name order by sort asc) as title')->find();
+        }
         return view('houseDetail',$data);
     }
 

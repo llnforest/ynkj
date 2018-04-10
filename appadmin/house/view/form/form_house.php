@@ -39,6 +39,14 @@
                 </td>
             </tr>
             <tr>
+                <th>选择卖点</th>
+                <td class="layui-form">
+                    {foreach $betterList as $item}
+                    <input type="checkbox" name="better_ids[]" value="{$item.id}" {if isset($info.better_ids) && in_array($item.id,explode(',',$info.better_ids))}checked{/if} title="{$item.name}">
+                    {/foreach}
+                </td>
+            </tr>
+            <tr>
                 <th>选择房型</th>
                 <td>
                     <select name="fangxing" class="form-control text">

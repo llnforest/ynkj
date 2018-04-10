@@ -41,6 +41,12 @@
                  </td>
              </tr>
              <tr>
+                 <th>房源卖点</th>
+                 <td>
+                     {$better.title??''}
+                 </td>
+             </tr>
+             <tr>
                  <th>房型名称</th>
                  <td>
                      {$info.fangxing_name??''}

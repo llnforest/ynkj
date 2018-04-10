@@ -101,13 +101,13 @@ $type    = isset($info['type'])?$info['type']:'';
             </td>
         </tr>
         <tr>
-            <th>日志请求类型</th>
+            <th>日志规则</th>
             <td>
                 <textarea name="log_rule" class="form-control" rows="3" ><?php echo isset($info['log_rule'])?$info['log_rule']:'';?></textarea>
             </td>
         </tr>
         <tr>
-            <th>备注</th>
+            <th>菜单备注</th>
             <td>
                 <textarea name="remark" class="form-control" rows="3" ><?php echo isset($info['remark'])?$info['remark']:'';?></textarea>
             </td>
