@@ -77,6 +77,14 @@
                 </td>
             </tr>
             <tr>
+                <th>房源单价</th>
+                <td>
+                    <input class="form-control text" type="text" name="per_price" value="{$info.per_price??''}" placeholder="房源单价（元）">
+                    <span class="input-text">元</span>
+                    <span class="form-required">*</span>
+                </td>
+            </tr>
+            <tr>
                 <th>房源面积</th>
                 <td>
                     <input class="form-control text" type="text" name="mianji" value="{$info.mianji??''}" placeholder="房源面积（平方米）">
@@ -179,6 +187,7 @@
             <tr>
                 <th>房源图片</th>
                 <td>
+
                     <div class="img-wrap">
                         {if isset($imgList)}
                         {foreach $imgList as $item}
@@ -222,6 +231,7 @@
                     <div class="add-img-btn">
                         <i class="layui-icon">&#xe654;</i>
                     </div>
+                    <span class="red">(图片建议大小750*380)</span>
                 </td>
             </tr>
             <tr>

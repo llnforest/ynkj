@@ -36,10 +36,10 @@ class Upload extends BaseController{
         else if($type == 'house')
             $baseUrl = DS . 'images' . DS .'house';
         // 移动到框架应用根目录/public/uploads/ 目录下
-        if(in_array($type,['banner','label','notice'])){
+        if(in_array($type,['banner','label','notice','user'])){
             $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move(Config::get('upload.path') . DS . $baseUrl);
-        }else{
-            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->size(1000)->move(Config::get('upload.path') . DS .  $baseUrl);
+        }elseif($type == "house"){
+            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->size(200,160)->move(Config::get('upload.path') . DS .  $baseUrl);
         }
         if($info){
             $url = $baseUrl . DS . $info->getSaveName();

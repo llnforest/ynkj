@@ -8,6 +8,7 @@ html,
 .grey{color:#ccc}
 .green{color:#01AAED  }
 .yellow{color:#FFB800 }
+.block{display:block}
 .table-image{
     display:block;
     max-width:600px;

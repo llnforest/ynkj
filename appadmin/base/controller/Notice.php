@@ -12,7 +12,7 @@ use think\Validate;
 
 
 class Notice extends BaseController{
-    private $roleValidate = ['title|通知标题' => 'require'];
+    private $roleValidate = ['title|通知标题' => 'require','agent_id|经纪人' => 'require'];
     //构造函数
     public function __construct(){
         parent::__construct();

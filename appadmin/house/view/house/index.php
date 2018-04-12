@@ -73,6 +73,7 @@
                 <th width="50">状态</th>
                 <th width="60">经纪人<span order="admin_id" class="order-sort"></span></th>
                 <th width="40">排序<span order="sort" class="order-sort"> </span></th>
+                <th width="40">推荐</th>
                 <th width="80">创建时间<span order="create_time" class="order-sort"></span></th>
                 <th width="80">操作</th>
             </tr>
@@ -91,6 +92,11 @@
                         <input class="form-control change-data short-input"  post-id="{$v.id}" post-url="{:url('house/inputHouse')}" data-name="sort" value="{$v.sort}">
                         {else}
                         {$v.sort}
+                        {/if}
+                    </td>
+                    <td class="layui-form">
+                        {if condition="checkPath('house/switchHouse',['id'=>$v.id]) && $v.status == 1"}
+                        <input type="checkbox" data-name="is_commend" data-url="{:url('house/switchHouse',['id'=>$v.id])}" lay-skin="switch" lay-text="推荐|取消" {$v.is_commend == 1 ?'checked':''} data-value="1|0">
                         {/if}
                     </td>
                     <td>{$v.create_time}</td>

@@ -65,6 +65,12 @@
                  </td>
              </tr>
              <tr>
+                 <th>房源单价</th>
+                 <td>
+                     {$info.per_price??''}元
+                 </td>
+             </tr>
+             <tr>
                  <th>房源面积</th>
                  <td>
                      {$info.mianji??''}平方米

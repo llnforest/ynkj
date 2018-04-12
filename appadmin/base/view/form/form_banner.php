@@ -21,8 +21,8 @@
             <tr>
                 <th>banner位置</th>
                 <td class="layui-form">
-                    <input type="radio" name="type" value="1" {if !isset($info.type) ||$info.type == 1}checked{/if} title="首页顶部banner">
-                    <input type="radio" name="type" value="2" {$info.type == 2?'checked':''} title="首页中部banner">
+                    <input type="radio" name="type" value="1" {if !isset($info.type) ||$info.type == 1}checked{/if} title="首页顶部banner(最多显示5张，大小:750*380)">
+                    <input type="radio" name="type" value="2" {$info.type == 2?'checked':''} title="首页中部banner(最多显示4张，大小:315*240)">
                 </td>
             </tr>
             <tr>
