@@ -30,6 +30,7 @@
             <thead>
             <tr>
                 <th width="100">手机号</th>
+                <th width="60">状态</th>
                 <th width="80">注册时间<span order="create_time" class="order-sort"> </span></th>
                 <th width="80">操作</th>
             </tr>
@@ -38,6 +39,13 @@
             {foreach $list as $v}
                 <tr>
                     <td>{$v.phone}</td>
+                    <td class="layui-form">
+                        {if condition="checkPath('user/switchUser',['id'=>$v.id])"}
+                        <input type="checkbox" data-name="status" data-url="{:url('user/switchUser',['id'=>$v.id])}" lay-skin="switch" lay-text="启用|停用" {$v.status == 1 ?'checked':''} data-value="1|0">
+                        {else}
+                        {$v.updown == 1?'<span class="blue">正常</span>':'<span class="red">停用</span>'}
+                        {/if}
+                    </td>
                     <td>{$v.create_time}</td>
                     <td>
                         {if condition="checkPath('user/userEdit',['id'=>$v['id']])"}

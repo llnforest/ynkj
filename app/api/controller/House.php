@@ -8,6 +8,7 @@ use model\BaseSearchModel;
 use model\HouseDetailModel;
 use model\HouseImageModel;
 use model\HouseModel;
+use model\UserFavouriteModel;
 
 class House extends BaseController{
 
@@ -67,6 +68,16 @@ class House extends BaseController{
             else $v['better_ids'] = [];
         }
         return json(['code'=>1,'data'=>$this->data]);
+    }
+
+    //判断是否关注
+    public function isNotice(){
+        $token = !empty($this->param['token'])?$this->param['token']:'000';
+        $user = UserModel::get(['token' => $token,'status' => 1]);
+        if(empty($user)) return ['code'=>1,'data'=>false];
+        $user = UserFavouriteModel::get(['user_id' => $user['id'],'house_id' => $this->param['house_id']]);
+        if(empty($user)) return ['code'=>1,'data'=>false];
+        else return ['code'=>1,'data'=>true];
     }
 
 }

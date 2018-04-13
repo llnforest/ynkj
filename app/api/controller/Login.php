@@ -38,6 +38,7 @@ class Login extends BaseController{
             $data['token'] = Tools::getSign($signArr,Config::get('secret_key'));
             $data['phone'] = $param['phone'];
             if(!empty($user)){
+                if(!$user['status']) return json(['code'=>0,'msg'=>'对不起，您的手机号已被停用']);
                 $user->save($data);
             }else{
                 UserModel::create($data);

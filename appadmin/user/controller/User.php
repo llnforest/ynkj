@@ -75,4 +75,14 @@ class User extends BaseController{
         else return ['code'=>1,'data'=>$userList];
     }
 
+    // 操作用户
+    public function switchUser(){
+        if($this->request->isPost()) {
+            $result = UserModel::get($this->id);
+            if (empty($result)) return ['code' => 0, 'msg' => lang('sys_param_error')];
+            $data = [$this->param['name'] => $this->param['data']];
+            return switchResult($result->save($data),'status');
+        }
+        return ['code'=>0,'msg'=>lang('sys_method_error')];
+    }
 }
