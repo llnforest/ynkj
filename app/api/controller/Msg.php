@@ -29,6 +29,8 @@ class Msg extends BaseController{
             ->where(['id' => $this->id])
             ->field('a.*,b.phone')
             ->find();
+        if($this->data['detail']['banner_url']) $this->data['detail']['banner_url'] =  $this->imgHost.str_replace('\\','/',$this->data['detail']['banner_url']);
+        if($this->data['detail']['house_url']) $this->data['detail']['house_url'] =  $this->imgHost.str_replace('\\','/',$this->data['detail']['house_url']);
         return json(['code'=>1,'data'=>$this->data]);
     }
 

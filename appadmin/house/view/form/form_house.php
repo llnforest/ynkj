@@ -28,6 +28,13 @@
             </tr>
             {/if}
             <tr>
+                <th>小区名称</th>
+                <td>
+                    <input class="form-control text" type="text" name="xiaoqu" value="{$info.xiaoqu??''}" placeholder="小区名称">
+                    <span class="form-required">*</span>
+                </td>
+            </tr>
+            <tr>
                 <th>房源标签</th>
                 <td>
                     <select name="label_id" class="form-control text">
@@ -44,6 +51,7 @@
                     {foreach $betterList as $item}
                     <input type="checkbox" name="better_ids[]" value="{$item.id}" {if isset($info.better_ids) && in_array($item.id,explode(',',$info.better_ids))}checked{/if} title="{$item.name}">
                     {/foreach}
+                    <span class="warn-red">(前端显示所选的前四个)</span>
                 </td>
             </tr>
             <tr>
@@ -100,8 +108,7 @@
             <tr>
                 <th>所在楼层</th>
                 <td>
-                    <input class="form-control text" type="text" name="louceng" value="{$info.louceng??''}" placeholder="所在楼层（层）">
-                    <span class="input-text">层</span>
+                    <input class="form-control text" type="text" name="louceng" value="{$info.louceng??''}" placeholder="所在楼层">
                 </td>
             </tr>
             <tr>
@@ -144,13 +151,6 @@
                 <th>首付预算</th>
                 <td>
                     <input class="form-control text" type="text" name="shoufu" value="{$info.shoufu??''}" placeholder="首付预算">
-                    <span class="input-text">万元</span>
-                </td>
-            </tr>
-            <tr>
-                <th>小区名称</th>
-                <td>
-                    <input class="form-control text" type="text" name="xiaoqu" value="{$info.xiaoqu??''}" placeholder="小区名称">
                 </td>
             </tr>
             <tr>

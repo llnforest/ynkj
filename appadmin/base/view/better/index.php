@@ -24,6 +24,7 @@
             <thead>
             <tr>
                 <th width="80">名称</th>
+                <th width="80">色值</th>
                 <th width="80">排序<span order="sort" class="order-sort"> </span></th>
                 <th width="80">操作</th>
             </tr>
@@ -32,6 +33,7 @@
             {foreach $list as $v}
                 <tr>
                     <td>{$v.name}</td>
+                    <td>{$v.color}</td>
                     <td>
                         {if condition="checkPath('better/inputBetter')"}
                         <input class="form-control change-data short-input"  post-id="{$v.id}" post-url="{:url('better/inputBetter')}" data-name="sort" value="{$v.sort}">

@@ -96,7 +96,7 @@
                     </td>
                     <td class="layui-form">
                         {if condition="checkPath('house/switchHouse',['id'=>$v.id]) && $v.status == 1"}
-                        <input type="checkbox" data-name="is_commend" data-url="{:url('house/switchHouse',['id'=>$v.id])}" lay-skin="switch" lay-text="推荐|取消" {$v.is_commend == 1 ?'checked':''} data-value="1|0">
+                        <input type="checkbox" data-name="is_commend" data-url="{:url('house/switchHouse',['id'=>$v.id])}" lay-skin="switch" lay-text="取消|开启" {$v.is_commend == 1 ?'checked':''} data-value="1|0">
                         {/if}
                     </td>
                     <td>{$v.create_time}</td>

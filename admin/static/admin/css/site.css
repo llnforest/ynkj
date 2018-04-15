@@ -38,9 +38,14 @@ html,
     visibility:hidden;
 }
 .input-text{
-    float: left;
+     float: left;
+     line-height: 35px;
+     margin-left: 5px;
+ }
+.warn-red{
     line-height: 35px;
     margin-left: 5px;
+    color:red;
 }
 .rg-margin{margin-right:5px;}
 .lf-margin{margin-left:5px;}

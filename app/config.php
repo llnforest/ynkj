@@ -246,6 +246,7 @@ return [
     ],
     'upload'        =>[
         'path'      =>  '../public/uploads',
+        'img_url'   => 'http://192.168.0.102/public/uploads'
     ],
     'secret_key'    => 'ai023fj42k3Ldsk0DKdkMdaeiv8aQ00',
     'service'       => '10109666',

@@ -287,7 +287,7 @@ class File extends SplFileObject
      * @param  boolean          $replace 同名文件是否覆盖
      * @return false|SplFileInfo false-失败 否则返回SplFileInfo实例
      */
-    public function move($path, $savename = true, $replace = true)
+    public function move($path, $savename = true, $replace = true,$ext = false)
     {
         // 文件上传失败，捕获错误代码
         if (!empty($this->info['error'])) {
@@ -312,7 +312,12 @@ class File extends SplFileObject
             $new_save_arr = explode('.',$saveName);
             $saveName = $new_save_arr[0].'_thumb.'.$new_save_arr[1];
         }
+        if($ext){
+            $name = explode('.',$saveName);
+            $saveName = $name[0].'.'.$ext;
+        }
         $filename = $path . $saveName;
+
 
         // 检测目录
         if (false === $this->checkPath(dirname($filename))) {

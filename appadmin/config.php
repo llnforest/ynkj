@@ -246,16 +246,6 @@ return [
     ],
     'upload'        =>[
         'path'      =>  '../public/uploads',
-    ],
-    'test'          =>[
-        'uid'       =>'1,2,3,4,5,6,7,8,9,10,11,12,13,14,26',
-    ],
-    'mweixin'        =>[
-        'appid'     => 'wx4dc109246b15ee96',
-        'appsecret' => '4490cb63946a187d75f46b4c42d5f975',
-        'systemType'=> 'mtest',
-    ],
-    'user'          =>[
-        'order_ids' => [8],
+        'img_url'   => 'http://192.168.0.102/public/uploads'
     ]
 ];

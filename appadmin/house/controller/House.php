@@ -19,7 +19,7 @@ use think\Validate;
 
 class House extends BaseController{
 
-    private $roleValidate = ['title|房源名称' => 'require','price|房源售价' => 'require|number','per_price|房源单价' => 'require|number','mianji|房源面积' => 'number'];
+    private $roleValidate = ['title|房源名称' => 'require','xiaoqu|小区名称' => 'require','price|房源售价' => 'require|number','per_price|房源单价' => 'require|number','mianji|房源面积' => 'number'];
     //构造函数
     public function __construct()
     {

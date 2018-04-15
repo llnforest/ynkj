@@ -9,6 +9,7 @@ use model\HouseDetailModel;
 use model\HouseImageModel;
 use model\HouseModel;
 use model\UserFavouriteModel;
+use think\Config;
 
 class House extends BaseController{
 
@@ -18,18 +19,18 @@ class House extends BaseController{
     }
 
     //房源资料页
-    public function house(){
+    public function index(){
         $this->data['house'] = HouseModel::alias('a')
-            ->join('tp_house_search b','a.fangxing = b.id','left')
-            ->join('tp_admin c','a.agent_id = b.id','left')
-            ->where(['id'=>$this->id])
+            ->join('tp_base_search b','a.fangxing = b.id','left')
+            ->join('tp_admin c','a.admin_id = c.id','left')
+            ->where(['a.id'=>$this->id])
             ->field('a.*,b.term as fangxing_name,c.phone')
             ->find();
-        if($this->data['house']['better_ids']) $this->data['betterList'] = BaseBetterModel::where(['id'=>['in',$v['better_ids']]])->order('sort asc')->select();
+        if($this->data['house']['better_ids']) $this->data['betterList'] = BaseBetterModel::where(['id'=>['in',$this->data['house']['better_ids']]])->order('sort asc')->select();
         else $this->data['betterList'] = [];
         $this->data['imgList'] = HouseImageModel::where(['house_id' =>$this->id])->order('sort asc')->select();
         foreach($this->data['imgList'] as &$v){
-            $v['url'] = str_replace('_thumb','',$v['url']);
+            $v['url'] = $this->imgHost.str_replace('\\','/',str_replace('_thumb','',$v['url']));
         }
         return json(['code'=>1,'data'=>$this->data]);
     }
@@ -64,8 +65,9 @@ class House extends BaseController{
             ->limit($this->param['page'] * $count,$count)
             ->select();
         foreach($this->data['house'] as &$v){
+            $v['url'] = $this->imgHost.str_replace('\\','/',$v['url']);
             if($v['better_ids']) $v['betterList'] = BaseBetterModel::where(['id'=>['in',$v['better_ids']]])->order('sort asc')->select();
-            else $v['better_ids'] = [];
+            else $v['betterList'] = [];
         }
         return json(['code'=>1,'data'=>$this->data]);
     }

@@ -36,6 +36,7 @@
             <tr>
                 <th width="80">图片</th>
                 <th width="100">标题</th>
+                <th width="100">位置</th>
                 <th width="80">链接</th>
                 <th width="80">状态</th>
                 <th width="40" >排序<span order="sort" class="order-sort"> </span></th>
@@ -47,6 +48,7 @@
                 <tr>
                     <td><img class="mini-image" src="{$v.url?'__ImagePath__'.$v.url:''}" style="width:80px"></td>
                     <td>{$v.name}</td>
+                    <td>{if $v.type == 1}首页顶部banner{elseif $v.type == 2}首页中部banner{/if}</td>
                     <td>{if $v.href}<span class="span-primary" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top"
                                             data-content="{$v.href}">明细</span>{/if}</td>
                     <td class="layui-form">
