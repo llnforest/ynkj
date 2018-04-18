@@ -47,20 +47,23 @@ class User extends DefaultController {
 
     //提交需求
     public function uploadRequest(){
+        $roleValidate = ['type|类型' => 'require','label_id|标签id' => 'require','remark|需求说明' => 'require'];
+        $validate = new Validate($roleValidate);
+        if(!$validate->check($this->param)) return json(['code' => 0,'msg' => $validate->getError()]);
         $requestData = [
             'user_id' => $this->userData['id'],
             'type'  => $this->param['type'],
             'label_id' => $this->param['label_id'],
             'remark' =>$this->param['remark']
         ];
-        $roleValidate = ['type|类型' => 'require','label_id|标签id' => 'require'];
-        $validate = new Validate($roleValidate);
-        if(!$validate->check($this->param)) return json(['code' => 0,'msg' => $validate->getError()]);
+        if(!empty(UserRequestModel::get($requestData))) return json(['code' => 0,'msg'=>'请勿重复提交相同内容']);
         $request = UserRequestModel::create($requestData);
         if(!empty($_FILES)){
+
             $imgList = [];
             foreach($_FILES as $key=>$v){
                 $result = $this->uploadImage(DS.'images'.DS.'request',$key);
+//                return json(['code'=>1,'msg'=>$result]);
                 if($result['code'] == 1 && !empty($result['img_url'])) $imgList[] = $result['img_url'];
             }
             if(!empty($imgList)){
@@ -72,7 +75,7 @@ class User extends DefaultController {
                 $imgModel->saveAll($imgData);
             }
         }
-        return json(['code'=>1,'msg'=>'提交成功']);
+        return json(['code'=>1,'msg'=>'需求提交成功，待审核','url'=>'source://view/user/main.ui']);
     }
 
 
@@ -101,15 +104,16 @@ class User extends DefaultController {
         if(empty($house_id)) return json(['code' => 0,'msg' => '房源不能为空']);
         $favouriteData = [
             'house_id' => $house_id,
-            'user_id'  => $this->userData['id']
+            'user_id'  => $this->userData['id'],
+            'favourite_date' => date('Y-m-d',time())
         ];
         $favourite = UserFavouriteModel::get($favouriteData);
         if(!empty($favourite)){
             $favourite->delete();
-            return json(['code'=>1,'msg'=>'取消关注成功']);
+            return json(['code'=>1,'msg'=>'取消关注成功','data'=>false]);
         }
         if(UserFavouriteModel::create($favouriteData)){
-            return json(['code'=>1,'msg'=>'关注成功']);
+            return json(['code'=>1,'msg'=>'关注成功','data'=>true]);
         }else{
             return json(['code'=>0,'msg'=>'关注失败']);
         }
@@ -118,7 +122,7 @@ class User extends DefaultController {
     // 上传图片
     public function uploadImage($baseUrl,$key = 'file'){
         $file = request()->file($key);
-        $tail = explode('.',$_FILES['file']['name']);
+        $tail = explode('.',$_FILES[$key]['name']);
         $info = $file->move(Config::get('upload.path') . DS . $baseUrl,true,true,$tail[1]);
         if($info){
             $url = $baseUrl . DS . $info->getSaveName();

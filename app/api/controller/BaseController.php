@@ -19,6 +19,8 @@ class BaseController extends Controller
     {
         $this->request = Request::instance();
         $this->param = $this->request->param();
+//        if(!$this->request->isPost()) return json(['code' =>1002,'msg'=>'请求方式错误！']);
+
         $this->id = !empty($this->param['id'])?$this->param['id']:'';
         $this->imgHost = Config::get('upload.img_url');
 

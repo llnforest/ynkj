@@ -88,7 +88,10 @@ return [
     'sys_del_confirm'        => '确认删除么？',
     'sys_page_nodata'        => '还没有数据哦！',
     'sys_no_permission'      => '您没有访问权限！',
-    'sys_cache_clear'        => '缓存清除成功'
+    'sys_cache_clear'        => '缓存清除成功',
 
+    'sms_data_error'         => '验证码错误',
+    'sms_check_success'      => '验证码正确',
+    'sms_check_phone_error'      => '手机号码错误',
 
 ];

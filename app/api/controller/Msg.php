@@ -13,9 +13,9 @@ class Msg extends BaseController{
     }
 
     //通知列表页
-    public function houseList(){
+    public function index(){
         $count = 15;
-        $orderBy  = 'a.sort asc,a.update_time desc';
+        $orderBy  = 'sort asc,update_time desc';
         $this->data['notice'] = BaseNoticeModel::order($orderBy)
             ->limit($this->param['page'] * $count,$count)
             ->select();
@@ -25,8 +25,8 @@ class Msg extends BaseController{
     //通知详情页
     public function detail(){
         $this->data['detail'] = BaseNoticeModel::alias('a')
-            ->join('tp_admin b','a.agent_id = b.id','left')
-            ->where(['id' => $this->id])
+            ->join('tp_admin b','a.admin_id = b.id','left')
+            ->where(['a.id' => $this->id])
             ->field('a.*,b.phone')
             ->find();
         if($this->data['detail']['banner_url']) $this->data['detail']['banner_url'] =  $this->imgHost.str_replace('\\','/',$this->data['detail']['banner_url']);

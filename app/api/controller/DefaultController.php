@@ -17,9 +17,10 @@ class DefaultController extends BaseController
         parent::__construct();
         $token = !empty($this->param['token'])?$this->param['token']:'000';
         $this->userData = UserModel::get(['token' => $token,'status' => 1]);
-//        if(empty($this->userData)){
-//            return json(['code' =>1002,'msg'=>'用户尚未登录，请先登录！','url' => 'source://view/login/main.ui']);
-//        }
+//        $this->userData = UserModel::get(2);
+        if(empty($this->userData)){
+            die(json_encode(['code' =>1002,'msg'=>'用户尚未登录，请先登录！','url' => 'source://view/login/main.ui']));
+        }
 
     }
 

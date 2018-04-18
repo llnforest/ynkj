@@ -56,5 +56,11 @@ class Index extends BaseController{
         return json(['code'=>1,'data'=>$this->data]);
     }
 
+    //标签列表
+    public function labelList(){
+        $this->data['label'] = BaseLabelModel::order('sort asc')->column('id','name');
+        $this->data['labelData'] = array_keys($this->data['label']);
+        return json(['code'=>1,'data'=>$this->data]);
+    }
 
 }

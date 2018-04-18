@@ -23,13 +23,13 @@ class Datalist extends DefaultController {
     }
 
     //关注列表页
-    public function NoticeList(){
+    public function noticeList(){
         $count = 15;
         $orderBy  = 'a.create_time desc';
         $this->data['house'] = UserFavouriteModel::alias('a')
             ->join('tp_house b','a.house_id = b.id','left')
             ->where(['a.user_id'=>$this->userData['id']])
-            ->field('a.*,b.title')
+            ->field('a.*,b.title,b.xiaoqu')
             ->order($orderBy)
             ->limit($this->param['page'] * $count,$count)
             ->select();
@@ -37,13 +37,14 @@ class Datalist extends DefaultController {
     }
 
     //看房列表页
-    public function RecordList(){
+    public function recordList(){
         $count = 15;
         $orderBy  = 'a.create_time desc';
         $this->data['house'] = UserRecordModel::alias('a')
             ->join('tp_house b','a.house_id = b.id','left')
+            ->join('tp_admin c','a.admin_id = c.id','left')
             ->where(['a.user_id'=>$this->userData['id']])
-            ->field('a.*,b.title')
+            ->field('a.*,b.title,b.xiaoqu,c.nick_name')
             ->order($orderBy)
             ->limit($this->param['page'] * $count,$count)
             ->select();
@@ -51,14 +52,14 @@ class Datalist extends DefaultController {
     }
 
     //预约列表页
-    public function ReserveList(){
+    public function reserveList(){
         $count = 15;
         $orderBy  = 'a.create_time desc';
         $this->data['house'] = UserReserveModel::alias('a')
             ->join('tp_house b','a.house_id = b.id','left')
             ->join('tp_admin c','a.admin_id = c.id','left')
-            ->where(['a.user_id'=>$this->userData['id']])
-            ->field('a.*,b.title,c.nick_name')
+            ->where(['a.user_id'=>$this->userData['id'],'a.status' => 1])
+            ->field('a.*,b.title,b.xiaoqu,c.nick_name')
             ->order($orderBy)
             ->limit($this->param['page'] * $count,$count)
             ->select();

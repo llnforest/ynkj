@@ -240,14 +240,22 @@ return [
         'input'     => true,
     ],
 
-   'thinkcms' =>[
+   'thinkcms'               =>[
         'style_directory' => '/static/admin/',
         'session_prefix'  => 'admin_',
     ],
-    'upload'        =>[
+    'sms'                   => [
+        'user_id'   => '97',
+        'account'   => 'ynkj',
+        'password'  => 'ynkj123',
+        'send_time' => '',
+        'SMSNum'    => 10,
+        'SMSTime'   => 60,
+    ],
+    'upload'                =>[
         'path'      =>  '../public/uploads',
-        'img_url'   => 'http://192.168.0.102/public/uploads'
+        'img_url'   => 'http://192.168.1.115/public/uploads'
     ],
     'secret_key'    => 'ai023fj42k3Ldsk0DKdkMdaeiv8aQ00',
-    'service'       => '10109666',
+    'service'       => '0558 6419777',
 ];

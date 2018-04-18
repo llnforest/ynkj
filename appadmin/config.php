@@ -244,6 +244,14 @@ return [
         'style_directory' => '/static/admin/',
         'session_prefix'  => 'admin_',
     ],
+    'sms'                   => [
+        'user_id'   => '97',
+        'account'   => 'ynkj',
+        'password'  => 'ynkj123',
+        'send_time' => '',
+        'SMSNum'    => 10,
+        'SMSTime'   => 60,
+    ],
     'upload'        =>[
         'path'      =>  '../public/uploads',
         'img_url'   => 'http://192.168.0.102/public/uploads'
