@@ -19,13 +19,13 @@ class BaseController extends Controller
     {
         $this->request = Request::instance();
         $this->param = $this->request->param();
-//        if(!$this->request->isPost()) return json(['code' =>1002,'msg'=>'请求方式错误！']);
+        if(!$this->request->isPost()) die(json_encode(['code' =>1002,'msg'=>'请求方式错误！']));
 
         $this->id = !empty($this->param['id'])?$this->param['id']:'';
         $this->imgHost = Config::get('upload.img_url');
 
         if(!Config::get('sys_open')){
-            return json(['code' =>1001,'msg'=>'系统维护升级中，请稍候再试！']);
+            return die(json_encode(['code' =>1001,'msg'=>'系统维护升级中，请稍候再试！']));
         }
         parent::__construct();
     }
