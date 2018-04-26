@@ -19,7 +19,8 @@ class DefaultController extends BaseController
         $this->userData = UserModel::get(['token' => $token,'status' => 1]);
 //        $this->userData = UserModel::get(2);
         if(empty($this->userData)){
-            die(json_encode(['code' =>1002,'msg'=>'用户尚未登录，请先登录！','url' => 'source://view/login/main.ui']));
+            if($token == '000') die(json_encode(['code' =>1002,'msg'=>'用户尚未登录，请先登录！','url' => 'source://view/login/main.ui']));
+            else die(json_encode(['code' =>1002,'msg'=>'登录信息已过期，请重新登录！','url' => 'source://view/login/main.ui']));
         }
 
     }

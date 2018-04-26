@@ -21,6 +21,11 @@ class User extends DefaultController {
         parent::__construct();
     }
 
+    //判断是否登录
+    public function isLogin(){
+        return json(['code' => 1,'data'=>[]]);
+    }
+
     //个人中心
     public function index(){
         $this->data['user'] = $this->userData;
