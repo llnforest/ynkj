@@ -16,7 +16,14 @@ class Download extends Controller {
 
     //下载苹果
     public function downIos(){
-
+        $path_name = $this->path.'/app/ynyj_ios.ipa';
+        $file=fopen($path_name,"r");
+        header("Content-Type: application/octet-stream");
+        header("Accept-Ranges: bytes");
+        header("Accept-Length: ".filesize($path_name));
+        header("Content-Disposition: attachment; filename='翼鸟宜居.ipa'");
+        echo fread($file,filesize($path_name));
+        fclose($file);
     }
 
     //下载安卓
@@ -26,7 +33,7 @@ class Download extends Controller {
         header("Content-Type: application/octet-stream");
         header("Accept-Ranges: bytes");
         header("Accept-Length: ".filesize($path_name));
-        header("Content-Disposition: attachment; filename='ynkj'");
+        header("Content-Disposition: attachment; filename='翼鸟宜居.apk'");
         echo fread($file,filesize($path_name));
         fclose($file);
     }
