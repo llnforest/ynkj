@@ -119,7 +119,7 @@
                         {if condition="checkPath('house/houseDetail') && in_array($v.status,[1,2,4])"}
                         <a  href="{:url('house/houseDetail',['id'=>$v['id']])}">查看</a>
                         {/if}
-                        {if condition="checkPath('house/houseDelete',['id'=>$v['id']]) && in_array($v.status,[0,3])"}
+                        {if condition="checkPath('house/houseDelete',['id'=>$v['id']])"}
                             <a  class="span-post" post-msg="确定要删除吗" post-url="{:url('house/houseDelete',['id'=>$v['id']])}">删除</a>
                         {/if}
                     </td>

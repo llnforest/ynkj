@@ -12,8 +12,11 @@ use model\BaseSearchModel;
 use model\HouseDetailModel;
 use model\HouseImageModel;
 use model\HouseModel;
+use model\UserFavouriteModel;
+use model\UserRecordModel;
 use model\UserRequestImageModel;
 use model\UserRequestModel;
+use model\UserReserveModel;
 use think\Validate;
 
 
@@ -140,6 +143,11 @@ class House extends BaseController{
         if($this->request->isPost()) {
             $result = HouseModel::get($this->id);
             if (empty($result)) return ['code' => 0, 'msg' => lang('sys_param_error')];
+            UserReserveModel::where(['house_id'=>$this->id])->delete();
+            UserRecordModel::where(['house_id'=>$this->id])->delete();
+            UserFavouriteModel::where(['house_id'=>$this->id])->delete();
+            HouseDetailModel::where(['house_id'=>$this->id])->delete();
+            HouseImageModel::where(['house_id'=>$this->id])->delete();
             return operateResult($result->delete(),'house/index','del');
         }
         return ['code'=>0,'msg'=>lang('sys_method_error')];

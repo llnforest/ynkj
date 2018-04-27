@@ -12,7 +12,7 @@
             <tr>
                 <th>背景色值</th>
                 <td>
-                    <input class="form-control text" type="text" name="color" value="{$info.color??''}" placeholder="卖点名称">
+                    <input class="form-control text" type="text" name="color" value="{$info.color??''}" placeholder="背景色值">
                     <span class="warn-red">(前端区块颜色，如：008a00ff)</span>
                 </td>
             </tr>
